@@ -7,18 +7,16 @@
       "maxDuration": 10
     }
   },
-  "builds": [
-    { "src": "api/index.ts", "use": "@vercel/node" },
-    { "src": "client/package.json", "use": "@vercel/static-build", "config": { "distDir": "client/dist" } }
-  ],
+  "buildCommand": "npm run build --workspace=client",
+  "outputDirectory": "client/dist",
   "env": {
     "MEALDB_API_BASE": "https://www.themealdb.com/api/json/v1",
     "MEALDB_API_KEY": "1",
     "CACHE_TTL_MS": "600000"
   },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index.ts" },
-    { "src": "/(.*)", "dest": "/client/dist/index.html" }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.ts" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
 
