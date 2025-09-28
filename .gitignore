@@ -1,0 +1,7 @@
+node_modules
+pnpm-lock.yaml
+yarn.lock
+server/.env
+server/dist
+client/dist
+.DS_Store
