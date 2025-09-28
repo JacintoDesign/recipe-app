@@ -2,11 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/index.ts": {
-      "memory": 512,
       "maxDuration": 10
     }
   },
-  "installCommand": "cd client && npm install",
+  "installCommand": "NPM_CONFIG_PRODUCTION=false npm ci --prefix server && npm run build --prefix server && npm install --prefix api && cd client && npm install",
   "buildCommand": "cd client && npm run build",
   "outputDirectory": "client/dist",
   "env": {
