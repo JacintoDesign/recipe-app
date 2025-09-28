@@ -7,7 +7,7 @@
       "maxDuration": 10
     }
   },
-  "buildCommand": "npm run build --workspace=client",
+  "buildCommand": "cd client && npm ci && npm run build",
   "outputDirectory": "client/dist",
   "env": {
     "MEALDB_API_BASE": "https://www.themealdb.com/api/json/v1",
