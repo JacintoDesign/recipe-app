@@ -3,12 +3,15 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { ThemeToggle } from './theme-toggle';
 import { useEffect, useState } from 'react';
+import { api } from '../lib/api';
+import { toast } from './ui/sonner';
 
 export function AppHeader() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState(searchParams.get('q') ?? '');
+  const [randomLoading, setRandomLoading] = useState(false);
 
   useEffect(() => {
     setSearchValue(searchParams.get('q') ?? '');
@@ -28,6 +31,22 @@ export function AppHeader() {
 
   const navigateToHome = () => {
     navigate('/', { replace: location.pathname === '/' });
+  };
+
+  const handleRandom = async () => {
+    try {
+      setRandomLoading(true);
+      const data = await api.getRandomMeal();
+      const id = data.meals?.[0]?.idMeal;
+      if (!id) {
+        throw new Error('No meal returned');
+      }
+      navigate(`/meal/${id}`);
+    } catch (err) {
+      toast.error('Could not fetch a random recipe. Please try again.');
+    } finally {
+      setRandomLoading(false);
+    }
   };
 
   return (
@@ -65,7 +84,16 @@ export function AppHeader() {
           <nav className="flex items-center gap-2" aria-label="Main navigation">
             <Button
               variant="secondary"
-              className="w-full sm:w-auto sm:border sm:border-border sm:bg-transparent sm:text-foreground sm:hover:bg-accent sm:hover:text-accent-foreground"
+              className="flex-1 sm:flex-none sm:w-auto sm:border sm:border-border sm:bg-transparent sm:text-foreground sm:hover:bg-accent sm:hover:text-accent-foreground"
+              onClick={handleRandom}
+              disabled={randomLoading}
+              aria-label="Get a random recipe"
+            >
+              Random
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex-1 sm:flex-none sm:w-auto sm:border sm:border-border sm:bg-transparent sm:text-foreground sm:hover:bg-accent sm:hover:text-accent-foreground"
               onClick={() => {
                 if (location.pathname === '/favorites') {
                   navigate('/', { replace: true });
