@@ -113,6 +113,23 @@ export function DetailsPage() {
         {meal.strMealThumb ? (
           <img src={meal.strMealThumb} alt={meal.strMeal} className="aspect-video w-full rounded-lg object-cover" />
         ) : null}
+        {/* Mobile-only Ingredients before Instructions */}
+        <div className="rounded-lg border p-6 md:hidden">
+          <h2 className="text-xl font-semibold">Ingredients</h2>
+          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+            {ingredients.map((ingredient, index) => (
+              <li key={index}>{ingredient}</li>
+            ))}
+          </ul>
+        </div>
+        {/* Mobile-only Favorite button */}
+        <div className="md:hidden">
+          <div className="flex flex-col gap-3">
+            <Button onClick={() => toggleFavoriteById(meal.idMeal)} aria-pressed={favorite}>
+              {favorite ? 'Remove from Favorites' : 'Save to Favorites'}
+            </Button>
+          </div>
+        </div>
         <section aria-labelledby="instructions-heading" className="space-y-4">
           <h2 id="instructions-heading" className="text-2xl font-semibold">
             Instructions
@@ -130,7 +147,7 @@ export function DetailsPage() {
           </a>
         ) : null}
       </div>
-      <aside className="space-y-6">
+      <aside className="hidden space-y-6 md:block">
         <div className="rounded-lg border p-6">
           <h2 className="text-xl font-semibold">Ingredients</h2>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
